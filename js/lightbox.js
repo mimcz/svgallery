@@ -45,14 +45,14 @@
             captions  : '<div class="row caption"></div>', 
             imgwrap   : '<span class="svgal-image-wrap"></span>',
             controls  : {
-                closebtn : '<button id="lightbox-close" type="button" class="controls btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>',
-                prevbtn  : '<button id="lightbox-prev" type="button" class="controls btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>',
-                nextbtn  : '<button id="lightbox-next" type="button" class="controls btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>'
+                closebtn : '<div id="lightbox-close" type="button" class="controls "><span class="glyphicon glyphicon-remove"></span></div>',
+                prevbtn  : '<div id="lightbox-prev" type="button" class="controls "><span class="glyphicon glyphicon-chevron-left"></span></div>',
+                nextbtn  : '<div id="lightbox-next" type="button" class="controls "><span class="glyphicon glyphicon-chevron-right"></span></div>'
             }
         }
     };
  
-    var Source, Body, Container, Content, Overlay, CurrentItem, PrevItem, NextItem, ImageLink, ImageCaption, SelectedItem, CloseBtn, PrevBtn, NextBtn;
+    var Source, Body, Container, Navi, Content, Overlay, CurrentItem, PrevItem, NextItem, ImageLink, ImageCaption, SelectedItem, CloseBtn, PrevBtn, NextBtn;
 
     $.extend(F, settings, options, {
 
@@ -185,24 +185,21 @@
             theImage.attr("src", ImageLink).addClass("img-thumbnail");
             Content.append(theImage);
 
-            console.log(Content);
-
             // If image caption
             if (settings.showCaption) {
-                F.updateCaption();
+                var ImageCaptionString = CurrentItem.find("img").attr("alt");
+                ImageCaption = $(settings.tpl.captions);
+                ImageCaption.text(ImageCaptionString);
+                ImageCaption.css({"color":settings.textColor}); 
+                Content.append(ImageCaption); 
             }
 
             // fill lightbox continer with content
-            Container.append(Content);            
+            Container.fadeOut("fast",function(){
+                Container.append(Content);
+            });            
+            Container.fadeIn("fast");
 
-        },
-
-        updateCaption: function() {
-            var ImageCaptionString = CurrentItem.find("img").attr("alt");
-            ImageCaption = $(settings.tpl.captions);
-            ImageCaption.text(ImageCaptionString);
-            ImageCaption.css({"color":settings.textColor}); 
-            Content.append(ImageCaption); 
         },
 
         updateOverlay: function() {
