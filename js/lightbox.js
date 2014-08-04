@@ -13,7 +13,7 @@
         thumbW        : 200,
         thumbH        : 150,
         thumbA        : "center top",
-        textColor     : "white",
+        textColor     : "#555555",
         overlayBg     : "rgba(0,0,0,0.7)",
         fontSize      : "1em",
         delay         : "slow",
@@ -103,67 +103,43 @@
 
             // Set Current image and promerties
             CurrentItem = item;
+            PrevItem = CurrentItem.parent().prev("li").find("a");
+            NextItem = CurrentItem.parent().next("li").find("a");            
             ImageLink = CurrentItem.attr("href");
 
             // Create and append lightbox overlay
             Overlay = $(settings.tpl.overlay);
             $("body").append(Overlay);           
 
-            // Prepare lightbox content body
-            Container = $(settings.tpl.container);
-            Content = $(settings.tpl.contents);
-            var theImage = $('<img src="" alt="">')
-            theImage.attr("src", ImageLink).addClass("img-thumbnail");
+            F.updateContent();
 
-            // console.log(theImage);
-
-            Content.append(theImage);
-
-            // If image caption
-            if (settings.showCaption) {
-                var ImageCaptionString = CurrentItem.find("img").attr("alt");
-                ImageCaption = $(settings.tpl.captions);
-                ImageCaption.text(ImageCaptionString);
-                ImageCaption.css({"color":settings.textColor}); 
-                Content.append(ImageCaption); 
-            }
-
-            // fill lightbox continer with content
-            Container.append(Content);
-    
             // Display overlay and fill it with controlls and content
             Overlay.fadeIn("slow", function(){
-                Overlay.append(settings.tpl.controls.closebtn).append(settings.tpl.controls.prevbtn).append(settings.tpl.controls.nextbtn);
+
+                Overlay.append(settings.tpl.controls.closebtn);
+                if (F.prevAvailable()) {
+                    Overlay.append(settings.tpl.controls.prevbtn);
+                }
+                if (F.nextAvailable()) {
+                    Overlay.append(settings.tpl.controls.nextbtn);
+                }
+
                 Overlay.append(Container);
 
                 // Bind click events on controls
-                $("#lightbox-close").click(function(e){
-                    e.preventDefault;
-                    F.close(e);
-                });
-
-                $("#lightbox-prev").click(function(e){
-                    e.preventDefault;
-                    F.prev(e);
-                });
-                
-                $("#lightbox-next").click(function(e){
-                    e.preventDefault;
-                    F.next(e);
-                });
+                F.setControls();
 
             });
 
             // Close lightbox when click on the overlay
-            Overlay.click(function(e){
-                e.preventDefault;
-                F.close(e);
-            });
+            // Overlay.click(function(e){
+            //     e.preventDefault;
+            //     F.close(e);
+            // });
 
         },
 
         close: function(event) {
-            console.log("close click");
             if((event.target.localName !== "img")) {
                 Overlay.find(".lightbox-container").fadeOut("fast", function(){
                     $("#overlay .controls").remove();    
@@ -175,13 +151,113 @@
         },
 
         // Lightbox will have a navigation through the gallery items (prev/next image)
-        next: function(e) {
+        next: function(e, item) {
+
+            // Set Current image and promerties
+            CurrentItem = item;
+            PrevItem = CurrentItem.parent().prev("li").find("a");
+            NextItem = CurrentItem.parent().next("li").find("a");            
+            ImageLink = CurrentItem.attr("href");
+
+            F.updateContent();
+            F.updateOverlay();
 
         },
 
-        prev: function(e) {
+        prev: function(e, item) {
 
+            // Set Current image and promerties
+            CurrentItem = item;
+            PrevItem = CurrentItem.parent().prev("li").find("a");
+            NextItem = CurrentItem.parent().next("li").find("a");            
+            ImageLink = CurrentItem.attr("href");
+
+            F.updateContent();
+            F.updateOverlay();            
+
+        },
+
+        updateContent: function() {
+            // Prepare lightbox content body
+            Container = $(settings.tpl.container);
+            Content = $(settings.tpl.contents);
+            var theImage = $('<img src="" alt="">');
+            theImage.attr("src", ImageLink).addClass("img-thumbnail");
+            Content.append(theImage);
+
+            console.log(Content);
+
+            // If image caption
+            if (settings.showCaption) {
+                F.updateCaption();
+            }
+
+            // fill lightbox continer with content
+            Container.append(Content);            
+
+        },
+
+        updateCaption: function() {
+            var ImageCaptionString = CurrentItem.find("img").attr("alt");
+            ImageCaption = $(settings.tpl.captions);
+            ImageCaption.text(ImageCaptionString);
+            ImageCaption.css({"color":settings.textColor}); 
+            Content.append(ImageCaption); 
+        },
+
+        updateOverlay: function() {
+
+            Overlay.empty();
+
+            Overlay.append(settings.tpl.controls.closebtn);
+            if (F.prevAvailable()) {
+                Overlay.append(settings.tpl.controls.prevbtn);
+            }
+            if (F.nextAvailable()) {
+                Overlay.append(settings.tpl.controls.nextbtn);
+            }
+
+            Overlay.append(Container);
+
+            // Bind click events on controls
+            F.setControls();
+
+        },
+
+        setControls: function(){
+            // Bind click events on controls
+            $("#lightbox-close").click(function(e){
+                e.preventDefault;
+                F.close(e);
+            });
+
+            $("#lightbox-prev").click(function(e){
+                e.preventDefault;
+                F.prev(e, PrevItem);
+            });
+            
+            $("#lightbox-next").click(function(e){
+                e.preventDefault;
+                F.next(e, NextItem);
+            });            
+        },
+
+        prevAvailable: function(){
+            if (PrevItem.length > 0){
+                return true
+            } else {
+                return false
+            }
+        },
+
+        nextAvailable: function(){
+            if (NextItem.length > 0){
+                return true
+            } else {
+                return false
+            }             
         }
+
 
     });
 
@@ -197,7 +273,7 @@
 
 $(document).ready(function(){
 
-    // initialize the plugin
+    // use the plugin
     $("#gallery").sunsetsGallery();
 
 });
