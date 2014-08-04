@@ -5,7 +5,7 @@
     // Plugin starts
 
     // Gallery default settings:
-    var F = $.sunsetsGallery = function(){};
+    var S = $.sunsetsGallery = function(){};
     var settings = {
 
         version : '1.0.0',
@@ -54,7 +54,7 @@
  
     var Source, Body, Container, Navi, Content, Overlay, CurrentItem, PrevItem, NextItem, ImageLink, ImageCaption, SelectedItem, CloseBtn, PrevBtn, NextBtn;
 
-    $.extend(F, settings, options, {
+    $.extend(S, settings, options, {
 
         init: function() {
             
@@ -84,6 +84,27 @@
                 $image.wrap($imageWrap);                
             });
 
+            // Bind keyboard actions
+            $(document).keyup(function(event) {
+                
+                // console.log(event.keyCode);
+                
+                if (event.keyCode === 27) {
+                    event.preventDefault();
+                    S.close(event);        
+                }
+ 
+                if ( (event.keyCode === 37) && (S.prevAvailable()) ) {
+                    event.preventDefault;
+                    S.prev(event, PrevItem);      
+                }
+ 
+                if ((event.keyCode === 39) && (S.nextAvailable()) ) {
+                    event.preventDefault;
+                    S.next(event, NextItem);      
+                }
+            });
+
             // Bind click event for all gallery image links
             Source.find("a").each(function(){
                 $(this).click(function(e){
@@ -92,7 +113,7 @@
                     e.preventDefault();
 
                     SelectedItem = $(this)
-                    F.open(SelectedItem);
+                    S.open(SelectedItem);
 
                 });
             });
@@ -111,30 +132,30 @@
             Overlay = $(settings.tpl.overlay);
             $("body").append(Overlay);           
 
-            F.updateContent();
+            S.updateContent();
 
             // Display overlay and fill it with controlls and content
             Overlay.fadeIn("slow", function(){
 
                 Overlay.append(settings.tpl.controls.closebtn);
-                if (F.prevAvailable()) {
+                if (S.prevAvailable()) {
                     Overlay.append(settings.tpl.controls.prevbtn);
                 }
-                if (F.nextAvailable()) {
+                if (S.nextAvailable()) {
                     Overlay.append(settings.tpl.controls.nextbtn);
                 }
 
                 Overlay.append(Container);
 
                 // Bind click events on controls
-                F.setControls();
+                S.setControls();
 
             });
 
             // Close lightbox when click on the overlay
             // Overlay.click(function(e){
             //     e.preventDefault;
-            //     F.close(e);
+            //     S.close(e);
             // });
 
         },
@@ -159,8 +180,8 @@
             NextItem = CurrentItem.parent().next("li").find("a");            
             ImageLink = CurrentItem.attr("href");
 
-            F.updateContent();
-            F.updateOverlay();
+            S.updateContent();
+            S.updateOverlay();
 
         },
 
@@ -172,8 +193,8 @@
             NextItem = CurrentItem.parent().next("li").find("a");            
             ImageLink = CurrentItem.attr("href");
 
-            F.updateContent();
-            F.updateOverlay();            
+            S.updateContent();
+            S.updateOverlay();            
 
         },
 
@@ -191,12 +212,14 @@
                 ImageCaption = $(settings.tpl.captions);
                 ImageCaption.text(ImageCaptionString);
                 ImageCaption.css({"color":settings.textColor}); 
-                Content.append(ImageCaption); 
             }
 
             // fill lightbox continer with content
             Container.fadeOut("fast",function(){
                 Container.append(Content);
+                if (settings.showCaption) {
+                    Container.append(ImageCaption); 
+                }
             });            
             Container.fadeIn("fast");
 
@@ -207,17 +230,17 @@
             Overlay.empty();
 
             Overlay.append(settings.tpl.controls.closebtn);
-            if (F.prevAvailable()) {
+            if (S.prevAvailable()) {
                 Overlay.append(settings.tpl.controls.prevbtn);
             }
-            if (F.nextAvailable()) {
+            if (S.nextAvailable()) {
                 Overlay.append(settings.tpl.controls.nextbtn);
             }
 
             Overlay.append(Container);
 
             // Bind click events on controls
-            F.setControls();
+            S.setControls();
 
         },
 
@@ -225,18 +248,19 @@
             // Bind click events on controls
             $("#lightbox-close").click(function(e){
                 e.preventDefault;
-                F.close(e);
+                S.close(e);
             });
 
             $("#lightbox-prev").click(function(e){
                 e.preventDefault;
-                F.prev(e, PrevItem);
+                S.prev(e, PrevItem);
             });
             
             $("#lightbox-next").click(function(e){
                 e.preventDefault;
-                F.next(e, NextItem);
-            });            
+                S.next(e, NextItem);
+            });
+
         },
 
         prevAvailable: function(){
@@ -258,7 +282,7 @@
 
     });
 
-    F.init();
+    S.init();
 
     // Plugin ends
 

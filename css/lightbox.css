@@ -29,7 +29,11 @@
     #overlay .lightbox-container .caption {
       margin-top: 1em;
       font-weight: normal;
-      font-size: 1.5em; }
+      font-size: 1.5em;
+      display: inline-block;
+      padding: 2px 4px;
+      background: white;
+      border-radius: 4px; }
     #overlay .lightbox-container .content {
       position: relative; }
     #overlay .lightbox-container img {
@@ -45,7 +49,12 @@
     position: absolute;
     z-index: 9999;
     font-size: 3em;
-    cursor: pointer; }
+    cursor: pointer;
+    color: #888888; }
+    #overlay #lightbox-close:hover,
+    #overlay #lightbox-prev:hover,
+    #overlay #lightbox-next:hover {
+      color: #666666; }
   #overlay #lightbox-close {
     top: 20px;
     right: 20px; }
