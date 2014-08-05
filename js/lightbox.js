@@ -52,7 +52,7 @@
         }
     };
  
-    var Source, Body, Container, Navi, Content, Overlay, CurrentItem, PrevItem, NextItem, ImageLink, ImageCaption, SelectedItem, CloseBtn, PrevBtn, NextBtn;
+    var Source, Body, Container, Navi, Content, Overlay, CurrentItem, PrevItem, NextItem, ImageLink, ImageCaption, ImagesArray, SelectedItem, CloseBtn, PrevBtn, NextBtn;
 
     $.extend(S, settings, options, {
 
@@ -83,6 +83,15 @@
                 // Wrap the image with the wrapper
                 $image.wrap($imageWrap);                
             });
+
+            // Get all fullsize images and preload'em
+            ImagesArray = [];
+            Source.find("a").each(function(i){
+                var imgHref = $(this).attr("href");
+                ImagesArray.push(imgHref);
+            });
+            console.log(ImagesArray);
+            S.preloadImages(ImagesArray); 
 
             // Bind keyboard actions
             $(document).keyup(function(event) {
@@ -225,8 +234,13 @@
 
         },
 
-        loadImage: function(){
-              
+        preloadImages: function(arrayOfImages){
+            $(arrayOfImages).each(function(){
+                $('<img>')[0].src = this;
+                console.log(this.toString(), "loaded");
+                // Alternatively you could use:
+                // (new Image()).src = this;
+            });   
         },        
 
         updateOverlay: function() {
