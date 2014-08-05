@@ -90,7 +90,7 @@
                 var imgHref = $(this).attr("href");
                 ImagesArray.push(imgHref);
             });
-            console.log(ImagesArray);
+            // console.log(ImagesArray);
             S.preloadImages(ImagesArray); 
 
             // Bind keyboard actions
@@ -236,10 +236,9 @@
 
         preloadImages: function(arrayOfImages){
             $(arrayOfImages).each(function(){
-                $('<img>')[0].src = this;
-                console.log(this.toString(), "loaded");
-                // Alternatively you could use:
-                // (new Image()).src = this;
+                var loadUnit = new Image();
+                loadUnit.src = this;
+                // console.log(this.toString(), "loaded");
             });   
         },        
 
