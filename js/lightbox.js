@@ -39,7 +39,7 @@
         },
 
         tpl : {
-            overlay   : '<div id="overlay"><div id="loading">loading, please wailt </div></div>',
+            overlay   : '<div id="overlay"></div>',
             container : '<div class="lightbox-container"></div>',
             contents  : '<div class="row content"></div>',
             captions  : '<div class="row caption"></div>', 
@@ -202,10 +202,9 @@
             // Prepare lightbox content body
             Container = $(settings.tpl.container);
             Content = $(settings.tpl.contents);
-
-            // var theImage = $('<img src="" alt="">');
-            // theImage.attr("src", ImageLink).addClass("img-thumbnail");
-            Content.append(S.loadImage());
+            var theImage = $('<img src="" alt="">');
+            theImage.attr("src", ImageLink).addClass("img-thumbnail");
+            Content.append(theImage);
 
             // If image caption
             if (settings.showCaption) {
@@ -227,35 +226,6 @@
         },
 
         loadImage: function(){
-
-            var loadedImage;
-
-            console.log(ImageLink);
-
-            $.ajax({
-                type: "GET",
-                url: ImageLink,
-                beforeSend:function(){
-                    // show gif here, eg:
-                    $("#loading").show();
-                },
-                complete:function(){
-                    // hide gif here, eg:
-                    $("#loading").hide();
-                },
-                success: function(img) {
-                    i = new Image();
-                    i.src = img;
-                    loadedImage = i;
-                },
-                error: function(error, txtStatus) {
-                    console.log(error);
-                    console.log(txtStatus);
-                    console.log('error');
-                }
-            });
-
-            return loadedImage;
               
         },        
 
