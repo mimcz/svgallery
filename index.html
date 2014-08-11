@@ -2,7 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Sunsets lightbox - sample page</title>
+        <meta author="Vojtech Zalesky">
+        <meta copyright="Sunsets Vision Ltd.">
+        <title>SV Gallery plugin - sample page</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/lightbox.css">
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -13,11 +15,11 @@
         <div class="container">
             <div class="page-header row">
                 <div class="col-md-8">
-                    <h1>Gallery plugin <small>by Sunsets Vision</small></h1>
+                    <h1>SV Gallery plugin <small>by Sunsets Vision</small></h1>
                     <p class="lead">A simple lightbox plugin solution for website galleries<br>empowered by Twitter Bootstrap 3.0</p>
                     <p>
-                        <button type="button" class="btn btn-success">Download</button>
-                        <button type="button" class="btn btn-default">Implementation</button>
+                        <a href="svgal.bundle.zip" class="btn btn-success">Download</a>
+                        <!--button type="button" class="btn btn-default">Implementation</button-->
                     </p>
                 </div>
                 <div class="col-md-4">
@@ -32,7 +34,7 @@
                 </div>                
             </div>
             <div class="well">
-                <ul id="gallery" class="list-inline lightbox">
+                <ul id="gallery" class="svgallery list-inline lightbox">
                     <li><a href="images/IMG_2131.jpg"><img width="200" class="img-thumbnail" src="images/IMG_2131.jpg" alt="Lefkada 2014"></a></li>
                     <li><a href="images/IMG_2137.jpg"><img width="200" class="img-thumbnail" src="images/IMG_2137.jpg" alt="Lefkada 2014"></a></li>
                     <li><a href="images/IMG_2138.jpg"><img width="200" class="img-thumbnail" src="images/IMG_2138.jpg" alt="Lefkada 2014"></a></li>
@@ -49,5 +51,15 @@
             </div>
             <footer class="page-header"><p class="text-right">Copyright © 2014 Sunsets Vision Ltd. All rights reserved.</p></footer>
         </div>
+        <script>
+
+        $(document).ready(function(){
+        
+            // use the plugin
+            $("#gallery").sunsetsGallery();
+        
+        });
+
+        </script>
     </body>
 </html>
