@@ -29,11 +29,14 @@
     #overlay .lightbox-container .caption {
       margin-top: 1em;
       font-weight: normal;
-      font-size: 1.5em;
+      font-size: 1.2em;
       display: inline-block;
-      padding: 2px 8px;
+      padding: 2px 10px;
       background: white;
-      border-radius: 4px; }
+      border-radius: 4px;
+      -webkit-box-shadow: 0px 0px 21px 0px rgba(50, 50, 50, 0.57);
+      -moz-box-shadow: 0px 0px 21px 0px rgba(50, 50, 50, 0.57);
+      box-shadow: 0px 0px 21px 0px rgba(50, 50, 50, 0.57); }
     #overlay .lightbox-container .content {
       position: relative; }
     #overlay .lightbox-container img {
